@@ -1,0 +1,23 @@
+{
+  "name": "openai-api-sandbox",
+  "version": "1.0.0",
+  "description": "OpenAI API Sandbox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayeshPadhiar/openai-api-sandbox.git"
+  },
+  "author": "Jayesh Padhiar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JayeshPadhiar/openai-api-sandbox/issues"
+  },
+  "homepage": "https://github.com/JayeshPadhiar/openai-api-sandbox#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "openai": "^5.11.0"
+  }
+}
