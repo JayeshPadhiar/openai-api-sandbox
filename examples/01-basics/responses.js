@@ -11,7 +11,7 @@ const openai = new OpenAI({
 const basicResponse = async () => {
 	const response = await openai.responses.create({
 		model: 'gpt-4o-mini',
-		input: 'Hello how are you?'
+		input: 'Write a one sentence story about a spoon.'
 	});
 
 	// the output_text is the final text output of the response
@@ -19,7 +19,9 @@ const basicResponse = async () => {
 
 	// the output array contains the array of the response items
 	for (const output of response.output) {
-		console.log(output.text);
+		for (const content of output.content) {
+			console.log(content.text);
+		}
 	}
 }
 
