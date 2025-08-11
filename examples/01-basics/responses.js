@@ -24,8 +24,8 @@ const basicResponse = async () => {
 		model: 'gpt-4o-mini',
 		input: [
 			{
-				// developer is like a function that provides instructions to the model, it handles the business logic
-				role: 'developer', // instructions provided by the developer
+				// developer/system is like a function that provides instructions to the model, it handles the business logic
+				role: 'developer',
 				content: 'You are a helpful assistant that ends every response with a joke.'
 			},
 			{
@@ -35,10 +35,6 @@ const basicResponse = async () => {
 		]
 	});
 	console.log(response2.output_text);
-
-	// input with image processing
-
-
 }
 
 
