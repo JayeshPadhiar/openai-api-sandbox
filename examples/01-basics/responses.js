@@ -7,21 +7,37 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY
 });
 
+
 const basicResponse = async () => {
+	// input structure with instructions
 	const response = await openai.responses.create({
 		model: 'gpt-4o-mini',
-		input: 'Write a one sentence story about a spoon.'
+		// instruction only applies to the current response
+		instructions: 'You are a helpful assistant that ends every response with a joke.',
+		input: 'Hi, how are you?'
 	});
-
-	// the output_text is the final text output of the response
 	console.log(response.output_text);
 
-	// the output array contains the array of the response items
-	for (const output of response.output) {
-		for (const content of output.content) {
-			console.log(content.text);
-		}
-	}
+
+	// similar input structure but with object instead of string
+	const response2 = await openai.responses.create({
+		model: 'gpt-4o-mini',
+		input: [
+			{
+				role: 'developer', // instructions provided by the developer
+				content: 'You are a helpful assistant that ends every response with a joke.'
+			},
+			{
+				role: 'user', // user input
+				content: 'Hi, how are you?'
+			}
+		]
+	});
+	console.log(response2.output_text);
+
+	// input with image processing
+
+
 }
 
 
@@ -37,4 +53,4 @@ const streamResponse = async () => {
 	}
 }
 
-streamResponse();
+basicResponse();
