@@ -2,6 +2,7 @@
 dotenv.config();
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import fs from 'fs';
 
 const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY
@@ -75,4 +76,28 @@ const imageAnalysis = async () => {
 	console.log(response.output_text);
 }
 
-imageAnalysis();
+// image generation
+const imageGeneration = async () => {
+	const response = await openai.responses.create({
+		model: 'gpt-4.1',
+		input: 'generate a 3 year old little messi playing with a ball',
+		tools: [
+			{
+				type: 'image_generation',
+				quality: 'low'
+			}
+		]
+	});
+
+	// Save the image to a file
+	const imageData = response.output
+		.filter((output) => output.type === "image_generation_call")
+		.map((output) => output.result);
+
+	if (imageData.length > 0) {
+		const imageBase64 = imageData[0];
+		fs.writeFileSync("image.png", Buffer.from(imageBase64, "base64"));
+	}
+}
+
+imageGeneration();
