@@ -24,11 +24,12 @@ const basicResponse = async () => {
 		model: 'gpt-4o-mini',
 		input: [
 			{
+				// developer is like a function that provides instructions to the model, it handles the business logic
 				role: 'developer', // instructions provided by the developer
 				content: 'You are a helpful assistant that ends every response with a joke.'
 			},
 			{
-				role: 'user', // user input
+				role: 'user', // user provides input that is then processed by the developer instructions
 				content: 'Hi, how are you?'
 			}
 		]
