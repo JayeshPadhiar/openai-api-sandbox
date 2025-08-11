@@ -1,8 +1,7 @@
 // this example explores the responses api of openai
+dotenv.config();
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
-
-dotenv.config();
 
 const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY
@@ -25,4 +24,17 @@ const basicResponse = async () => {
 	}
 }
 
-basicResponse();
+
+const streamResponse = async () => {
+	const stream = await openai.responses.create({
+		model: 'gpt-4o',
+		input: 'write a sentence about a spoon',
+		stream: true
+	});
+
+	for await (const chunk of stream) {
+		process.stdout.write(chunk.delta ?? '');
+	}
+}
+
+streamResponse();
