@@ -42,7 +42,7 @@ const basicResponse = async () => {
 const streamResponse = async () => {
 	const stream = await openai.responses.create({
 		model: 'gpt-4o',
-		input: 'write a sentence about a spoon',
+		input: 'give a brief of the history of the internet',
 		stream: true
 	});
 
@@ -63,11 +63,12 @@ const imageAnalysis = async () => {
 				content: [
 					{
 						type: 'input_text',
-						text: 'What is this image? What is the name of the player in the image?'
+						text: 'What is this image? What is the name of the player in the image? What is the name of the team in the image?'
 					},
 					{
 						type: 'input_image',
-						image_url: imageurl
+						image_url: imageurl,
+						detail: 'low', // low, high, auto
 					}
 				]
 			}
@@ -80,7 +81,7 @@ const imageAnalysis = async () => {
 const imageGeneration = async () => {
 	const response = await openai.responses.create({
 		model: 'gpt-4.1',
-		input: 'generate a 3 year old little messi playing with a ball',
+		input: 'generate a photo of an engineering team sitting and having lunch',
 		tools: [
 			{
 				type: 'image_generation',
@@ -100,4 +101,29 @@ const imageGeneration = async () => {
 	}
 }
 
-imageGeneration();
+const fileAnalysis = async () => {
+	const response = await openai.responses.create({
+		model: 'gpt-4o-mini',
+		input: [
+			{
+				role: 'user',
+				content: [
+					{
+						type: 'input_text',
+						text: 'Analyze the following file and give me a brief of the person'
+					},
+					{
+						type: 'input_file',
+						file_url: 'https://jayeshpadhiar.com/files/Jayesh_Padhiar_Resume.pdf'
+					}
+				]
+			}
+		],
+	});
+	console.log(response.output_text);
+}
+
+//imageGeneration();
+// imageAnalysis();
+
+fileAnalysis();
