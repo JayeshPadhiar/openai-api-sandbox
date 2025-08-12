@@ -123,7 +123,17 @@ const fileAnalysis = async () => {
 	console.log(response.output_text);
 }
 
-//imageGeneration();
-// imageAnalysis();
+const webSearch = async () => {
+	const response = await openai.responses.create({
+		model: 'gpt-4o-mini',
+		input: 'whats the news on supreme court and dogs',
+		tools: [
+			{
+				type: 'web_search_preview',
+			}
+		]
+	});
+	console.log(response.output_text);
+}
 
-fileAnalysis();
+webSearch();
