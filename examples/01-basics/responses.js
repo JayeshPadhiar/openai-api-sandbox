@@ -136,4 +136,68 @@ const webSearch = async () => {
 	console.log(response.output_text);
 }
 
-webSearch();
+const customFunction = async () => {
+	const tools = [{
+		type: 'function',
+		name: 'get_weather',
+		description: 'Get the latest weather of the given location and return the temperature in celsius and end the response with a joke',
+		parameters: {
+			type: 'object',
+			properties: {
+				location: {
+					type: 'string',
+					description: 'The location to get the weather for'
+				}
+			},
+		},
+	}];
+
+	let input = [{
+		role: 'user',
+		content: 'whats the weather in navi mumbai'
+	}]
+
+	let response = await openai.responses.create({
+		model: 'gpt-4o-mini',
+		input,
+		tools,
+		tool_choice: 'auto' // auto, required, none
+	});
+	console.log(response.output);
+
+	// add the response to the input
+	input = input.concat(response.output);
+
+	// get the function call details from the response
+	const functionCall = response.output.find(output => output.type === 'function_call');
+
+	// function to call
+	const getWeather = async (location) => {
+		return {
+			location,
+			temperature: 25,
+			weather: 'sunny',
+			joke: 'Why did the computer scientist get a cold? Because it had too many bugs. heheheheheheh'
+		}
+	}
+	const result = await getWeather('navi mumbai');
+
+	// add the result to the input
+	input.push({
+		type: 'function_call_output',
+		call_id: functionCall.call_id,
+		output: JSON.stringify(result)
+	});
+
+	// call the function again
+	response = await openai.responses.create({
+		model: 'gpt-4o-mini',
+		input,
+		tools,
+		instructions: 'Give the final response here',
+	});
+	console.log(response.output_text);
+
+}
+
+customFunction();
