@@ -1,1 +1,1 @@
-import './examples/01-core-concepts.js';
+import './examples/01-basics.js';
