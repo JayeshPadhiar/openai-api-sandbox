@@ -2,6 +2,8 @@
 dotenv.config();
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import {Agent, run} from '@openai/agents'
+
 import fs from 'fs';
 
 const openai = new OpenAI({
@@ -17,7 +19,7 @@ const basicResponse = async () => {
 		instructions: 'You are a helpful assistant that ends every response with a joke.',
 		input: 'Hi, how are you?'
 	});
-	console.log(response.output_text);
+	console.log('Response 1:', response.output_text);
 
 
 	// similar input structure but with object instead of string
@@ -35,7 +37,7 @@ const basicResponse = async () => {
 			}
 		]
 	});
-	console.log(response2.output_text);
+	console.log('Response 2:', response2.output_text);
 }
 
 // stream response
@@ -200,4 +202,37 @@ const customFunction = async () => {
 
 }
 
-basicResponse();
+const agentFlow = async () => {
+	const spanishAgent = new Agent({
+		name: 'spanishAgent',
+		instructions: 'you are an agent that only speaks spanish. start your response with "Hola soy un agente de espanol"',
+	});
+
+	const englishAgent = new Agent({
+		name: 'englishAgent',
+		instructions: 'you are an agent that only speaks english. start your response with "Hello I am an english agent"',
+	});
+
+	const germanyAgent = new Agent({
+		name: 'germanAgent',
+		instructions: 'you are an agent that only speaks german. start your response with "Hallo ich bin ein deutscher agent"',
+	});
+
+	const langAgent = new Agent({
+		name: 'langAgent',
+		instructions: 'you are an agent that takes input from the user and translates it to the language of the agent that is speaking',
+		handoffs: [spanishAgent, englishAgent, germanyAgent]
+	});
+
+	const result = await run(langAgent, 'was machst du?');
+	console.log(result.finalOutput);
+}
+
+// basicResponse();
+// streamResponse();
+// imageAnalysis();
+// imageGeneration();
+// fileAnalysis();
+// webSearch();
+// customFunction();
+agentFlow();
